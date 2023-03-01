@@ -1,5 +1,5 @@
 # Description
-#   A hubot script that communicates with Gitlab
+#   与 gitlab 交互的 hubot 脚本
 #
 # Configuration:
 #   HUBOT_GITLAB_URL
@@ -13,7 +13,7 @@
 #   <optional notes required for the script>
 #
 # Author:
-#   Olivier Truong <olivier@oltruong.com>
+#   AnJia <anjia0532@gmail.com>
 
 GitlabClient = require("./gitlab-client")
 createPipeline = require("./parser-pipeline")

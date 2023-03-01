@@ -1,16 +1,16 @@
 {
-  "name": "hubot-gitlab-connector",
+  "name": "hubot-gitlab-bot",
   "description": "A hubot script that communicates with Gitlab API",
-  "version": "0.0.11",
-  "author": "Olivier Truong <olivier@oltruong.com>",
+  "version": "0.0.18",
+  "author": "AnJia <anjia0532@gmail.com>",
   "license": "MIT",
   "keywords": "hubot, hubot-scripts, gitlab",
   "repository": {
     "type": "git",
-    "url": "git://github.com/oltruong/hubot-gitlab-connector.git"
+    "url": "git://github.com/anjia0532/hubot-gitlab-bot.git"
   },
   "bugs": {
-    "url": "https://github.com/oltruong/hubot-gitlab-connector/issues"
+    "url": "https://github.com/anjia0532/hubot-gitlab-bot/issues"
   },
   "peerDependencies": {
     "hubot": "2.x"
@@ -22,7 +22,7 @@
     "coffee-coverage": "^3.0.0",
     "coffeescript": "2.1.0",
     "coveralls": "^3.0.0",
-    "hubot": "3.0.1",
+    "hubot": "3.3.2",
     "hubot-test-helper": "1.8.1",
     "istanbul": "^0.4.5",
     "matchdep": "~0.3.0",

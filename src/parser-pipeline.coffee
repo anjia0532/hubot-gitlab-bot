@@ -24,10 +24,10 @@ findRightBranch = (res, body, gitlabClient, branchName, project) ->
   filter_branch_names = (item for item in branch_names when item.indexOf(branchName) != -1)
   if filter_branch_names.length == 0
     branch_names_info = branch_names.join('\n')
-    res.reply "Sorry no branch found for #{branchName}. Here are the branches:" + '\n' + "#{branch_names_info}"
+    res.reply "对不起，未找到 #{branchName} 分支. 已有分支为:" + '\n' + "#{branch_names_info}"
   else if filter_branch_names.length > 1
     filter_branch_info = filter_branch_names.join('\n')
-    res.reply "Sorry #{filter_branch_names.length} branches found for #{branchName}. Please be more specific. Here are the branches" + '\n' + "#{filter_branch_info}"
+    res.reply "对不起，找到 #{filter_branch_names.length} 个包含 #{branchName} 的分支 . 请指定具体用哪个. 已有分支为：" + '\n' + "#{filter_branch_info}"
   else
     branch = filter_branch_names[0]
     gitlabClient.getTriggers(project.id) (err, response, body) ->
@@ -36,7 +36,9 @@ findRightBranch = (res, body, gitlabClient, branchName, project) ->
 readTrigger = (res, body, gitlabClient, branch, project)->
   data = JSON.parse body
   if (data.length == 0)
-    res.reply "No trigger found. Please create a trigger first"
+    res.reply "未找到触发器，正在尝试通过 api 创建，请重试"
+    gitlabClient.createTrigger(project.id) (err, response, body) ->
+      utils.parseResult(res, err, response, parseTrigger, body, branch, project)
   else
     trigger = data[0].token
     params = JSON.stringify({
@@ -48,6 +50,6 @@ readTrigger = (res, body, gitlabClient, branch, project)->
 
 parseTrigger = (res, body, branch, project) ->
   data = JSON.parse body
-  res.reply "Pipeline #{data.id} created on branch #{branch} of project #{project.name}.\nSee #{project.web_url}/pipelines/#{data.id}"
+  res.reply "已为 项目 #{project.name} 下的分支 #{branch} 创建流水线，id为: #{data.id} .\n 详见 #{project.web_url}/pipelines/#{data.id}"
 
 module.exports = createPipeline

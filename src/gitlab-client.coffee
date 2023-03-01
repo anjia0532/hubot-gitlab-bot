@@ -1,37 +1,42 @@
 class GitlabClient
   constructor: (@robot, @url, @token) ->
 
-  request = ->
-    @robot.http(@url).header('Accept', 'application/json').header('PRIVATE-TOKEN', @token)
+  http: (uri) ->
+    @robot.http(@url + uri).header('Accept', 'application/json').header('PRIVATE-TOKEN', @token)
 
   getVersion: () ->
-    request.call(this).path('/api/v4/version').get()
+    this.http('/api/v4/version').get()
 
   getTriggers: (projectId) ->
-    request.call(this).path('/api/v4/projects/' + projectId + '/triggers').get()
+    this.http('/api/v4/projects/' + projectId + '/triggers').get()
 
   getProject: (projectId) ->
-    request.call(this).path('/api/v4/projects/' + projectId).get()
+    this.http('/api/v4/projects/' + projectId).get()
 
   getProjectsByName: (searchName) ->
-    request.call(this).path('/api/v4/projects?search=' + searchName).get()
+    this.http('/api/v4/projects?search=' + searchName).get()
 
   getProjects: () ->
-    request.call(this).path('/api/v4/projects').get()
+    this.http('/api/v4/projects').get()
 
   getBranches: (projectId) ->
-    request.call(this).path('/api/v4/projects/' + projectId + '/repository/branches').get()
+    this.http('/api/v4/projects/' + projectId + '/repository/branches').get()
 
   getMergeRequests: (projectId, filter) ->
-    filterPath=""
-    if (filter !="")
-      filterPath="?"+filter
-    request.call(this).path('/api/v4/projects/' + projectId + '/merge_requests'+filterPath).get()
+    filterPath = ""
+    if (filter != "")
+      filterPath = "?" + filter
+    this.http('/api/v4/projects/' + projectId + '/merge_requests' + filterPath).get()
 
   acceptMergeRequest: (projectId, merge_iid) ->
-    request.call(this).path('/api/v4/projects/' + projectId + '/merge_requests/'+merge_iid+'/merge').put()
+    this.http('/api/v4/projects/' + projectId + '/merge_requests/' + merge_iid + '/merge').put()
 
   triggerPipeline: (projectId, params) ->
-    request.call(this).header('Content-type', 'application/json').path('/api/v4/projects/' + projectId + '/trigger/pipeline').post(params)
+    this.http('/api/v4/projects/' + projectId + '/trigger/pipeline').header('Content-type', 'application/json')
+      .post(params)
+
+  createTrigger: (projectId) ->
+    this.http('/api/v4/projects/' + projectId + '/triggers/').header('Content-type', 'application/json')
+      .put({"description": "hubot trigger"})
 
 module.exports = GitlabClient

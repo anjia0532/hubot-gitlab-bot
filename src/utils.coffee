@@ -8,10 +8,10 @@ utils.buildListInfo = (data, callback) ->
 
 utils.parseResult = (res, err, response, successMethod, body, args...)->
   if err
-    res.reply "Encountered an error :( #{err}"
+    res.reply "遇到错误 :( #{err}"
     return
   if response.statusCode.toString().substr(0, 1)!="2"
-    res.reply "Request Failed HTTP #{response.statusCode} Body [#{body}]"
+    res.reply "发起 http 请求失败 HTTP状态码 #{response.statusCode} Body [#{body}]"
     return
   successMethod(res, body, args...)
 
