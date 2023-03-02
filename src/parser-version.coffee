@@ -7,6 +7,6 @@ getVersion = (gitlabClient, res) ->
 
 readVersion = (res, body)->
   data = JSON.parse body
-  res.reply "gitlab version is #{data.version}, revision #{data.revision}"
+  res.reply "gitlab version is **#{data.version}**, revision **#{data.revision}**"
 
 module.exports = getVersion

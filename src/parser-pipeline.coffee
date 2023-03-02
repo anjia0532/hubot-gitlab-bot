@@ -3,7 +3,7 @@ utils = require("./utils")
 createPipeline = (gitlabClient, res, command) ->
   if (gitlabClient? && res? && command?)
     if (command.length != 4 || command[1] != 'trigger')
-      res.reply "Correct usage is gitlab pipeline trigger \<projectId\> \<branch\>"
+      res.reply "正确用法为 gitlab pipeline trigger projectId branch"
       return
     projectId = command[2]
     branchName = command[3]
@@ -23,11 +23,11 @@ findRightBranch = (res, body, gitlabClient, branchName, project) ->
 
   filter_branch_names = (item for item in branch_names when item.indexOf(branchName) != -1)
   if filter_branch_names.length == 0
-    branch_names_info = branch_names.join('\n')
-    res.reply "对不起，未找到 #{branchName} 分支. 已有分支为:" + '\n' + "#{branch_names_info}"
+    branch_names_info = branch_names.join('  \n  ')
+    res.reply "对不起，未找到 #{branchName} 分支. 已有分支为:" + '  \n  ' + "#{branch_names_info}"
   else if filter_branch_names.length > 1
-    filter_branch_info = filter_branch_names.join('\n')
-    res.reply "对不起，找到 #{filter_branch_names.length} 个包含 #{branchName} 的分支 . 请指定具体用哪个. 已有分支为：" + '\n' + "#{filter_branch_info}"
+    filter_branch_info = filter_branch_names.join('  \n  ')
+    res.reply "对不起，找到 #{filter_branch_names.length} 个包含 #{branchName} 的分支 . 请指定具体用哪个. 已有分支为：" + '  \n  ' + "#{filter_branch_info}"
   else
     branch = filter_branch_names[0]
     gitlabClient.getTriggers(project.id) (err, response, body) ->
@@ -50,6 +50,6 @@ readTrigger = (res, body, gitlabClient, branch, project)->
 
 parseTrigger = (res, body, branch, project) ->
   data = JSON.parse body
-  res.reply "已为 项目 #{project.name} 下的分支 #{branch} 创建流水线，id为: #{data.id} .\n 详见 #{project.web_url}/pipelines/#{data.id}"
+  res.reply "## 已为项目 #{project.name} 下的分支 #{branch} 创建流水线  \n  id为: #{data.id}  \n  [查看详情](#{project.web_url}/pipelines/#{data.id})"
 
 module.exports = createPipeline

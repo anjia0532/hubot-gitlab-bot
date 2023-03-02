@@ -10,7 +10,7 @@ getProjects = (gitlabClient, res, command) ->
       gitlabClient.getProjectsByName(searchName) (err, response, body) ->
         readProjects(res, err, response, body)
     else
-      res.reply "正确用法为: gitlab projects 或者 gitlab projects \<searchName\>"
+      res.reply "正确用法为: **gitlab projects** 或者 **gitlab projects searchName**"
       return
 
 readProjects = (res, err, response, body)->
@@ -20,10 +20,10 @@ readProjects = (res, err, response, body)->
 returnProject = (res, body)->
   data = JSON.parse body
   project_info = utils.buildListInfo(data, formatProject)
-  res.reply "找到 #{data.length} 个项目." + '\n' + project_info.join('\n\n\n')
+  res.reply "## 找到 #{data.length} 个项目  \n  "+ project_info.join('  \n\n\n  ')
 
 formatProject = (project) ->
-  "- #{project.name}, id:#{project.id}" + '\n' + "  #{project.description}" + '\n' + "  项目地址: #{project.web_url}, 所处分组: #{project.namespace.name}, 最后活动时间: #{project.last_activity_at}"
+  "**id**: #{project.id}  \n  **项目**: [#{project.namespace.name}/#{project.name}](#{project.web_url}) #{project.description}  \n  **最后更新时间**: #{project.last_activity_at}"
 
 
 module.exports = getProjects
